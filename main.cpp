@@ -28,15 +28,6 @@ public:
     }
 };
 
-struct BSTNode {
-    Item data;
-    BSTNode* left;
-    BSTNode* right;
-
-    BSTNode(Item item) : data(item), left(nullptr), right(nullptr) {}
-};
-
-
 
 class MinHeap {
 private:
