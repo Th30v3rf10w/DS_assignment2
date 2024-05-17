@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -139,13 +140,23 @@ public:
 };
 
 
-
-
-
 template <typename T>
 void readItems(istream& i, T& t) {
+    string itemName, category;
+    int price;
 
+    while (i >> itemName >> category >> price) {
+        t.insert(Item(itemName, category, price));
+    }
+
+    if (i.eof()) {
+        cout << "End of file reached." << endl;
+    } else {
+        cerr << "Error reading items from file." << endl;
+    }
 }
+
+
 
 void displayMenu() {
     cout << "1. Binary Search Trees (BST)" << endl;
