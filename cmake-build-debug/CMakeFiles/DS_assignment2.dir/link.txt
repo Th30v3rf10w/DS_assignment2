@@ -1,0 +1,3 @@
+"C:\Users\youss\AppData\Local\Programs\CLion Nova\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\DS_assignment2.dir/objects.a
+C:\Users\youss\AppData\Local\Programs\CLIONN~1\bin\mingw\bin\ar.exe qc CMakeFiles\DS_assignment2.dir/objects.a @CMakeFiles\DS_assignment2.dir\objects1.rsp
+C:\Users\youss\AppData\Local\Programs\CLIONN~1\bin\mingw\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\DS_assignment2.dir/objects.a -Wl,--no-whole-archive -o DS_assignment2.exe -Wl,--out-implib,libDS_assignment2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\DS_assignment2.dir\linkLibs.rsp

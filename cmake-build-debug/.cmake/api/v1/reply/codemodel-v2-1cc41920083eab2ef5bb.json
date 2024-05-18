@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "DS_assignment2::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-DS_assignment2-Debug-46252d121db524492d3b.json",
+					"jsonFile" : "target-DS_assignment2-Debug-afb262722d1322df5334.json",
 					"name" : "DS_assignment2",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/Subjects/DS/DS_assignment2/cmake-build-debug",
-		"source" : "D:/Subjects/DS/DS_assignment2"
+		"build" : "D:/Projects/C++/DS_assignment2/cmake-build-debug",
+		"source" : "D:/Projects/C++/DS_assignment2"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 6
 	}
 }
