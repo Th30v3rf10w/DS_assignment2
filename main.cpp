@@ -6,6 +6,162 @@
 
 using namespace std;
 
+// <BST>
+
+struct BSTItem {
+    string name;
+    string category;
+    double price;
+
+    BSTItem(string n, string c, double p) : name(n), category(c), price(p) {}
+
+    void print() const {
+        cout << "Name: " << name << ", Category: " << category << ", Price: " << price << endl;
+    }
+};
+
+class BSTTree {
+private:
+    struct Node {
+        BSTItem data;
+        Node* left;
+        Node* right;
+
+        Node(BSTItem value) : data(value), left(nullptr), right(nullptr) {}
+    };
+
+    Node* root = nullptr;
+
+    void addHelper(Node* temp, BSTItem value) {
+        if (value.name <= temp->data.name) {
+            if (temp->left == nullptr) {
+                temp->left = new Node(value);
+            } else {
+                addHelper(temp->left, value);
+            }
+        } else {
+            if (temp->right == nullptr) {
+                temp->right = new Node(value);
+            } else {
+                addHelper(temp->right, value);
+            }
+        }
+    }
+
+    Node* removeHelper(Node* root, string name) {
+        if (root == nullptr) return root;
+        if (name < root->data.name)
+            root->left = removeHelper(root->left, name);
+        else if (name > root->data.name)
+            root->right = removeHelper(root->right, name);
+        else {
+            if (root->left == nullptr) {
+                Node* temp = root->right;
+                delete root;
+                return temp;
+            } else if (root->right == nullptr) {
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            } else {
+                Node* temp = getMinNode(root->right);
+                root->data = temp->data;
+                root->right = removeHelper(root->right, temp->data.name);
+            }
+        }
+        return root;
+    }
+
+    Node* getMinNode(Node* node) {
+        Node* current = node;
+        while (current && current->left != nullptr)
+            current = current->left;
+        return current;
+    }
+    //in order travers
+    void inOrder(Node* temp, vector<BSTItem>& items) {
+        if (temp == nullptr) return;
+        inOrder(temp->left, items);
+        items.push_back(temp->data);
+        inOrder(temp->right, items);
+    }
+
+    void displayItems(const vector<BSTItem>& items) {
+        for (const auto& item : items) {
+            item.print();
+        }
+    }
+
+public:
+    void add(BSTItem item) {
+        if (root == nullptr) {
+            root = new Node(item);
+        } else {
+            addHelper(root, item);
+        }
+    }
+
+    void add(string name, string category, double price) {
+        BSTItem newItem(name, category, price);
+        add(newItem);
+    }
+
+    void remove(string name) {
+        root = removeHelper(root, name);
+    }
+
+    void displayItemsInOrder() {
+        vector<BSTItem> items;
+        inOrder(root, items);
+        displayItems(items);
+    }
+
+    void displayItemsSortedByName(bool ascending = true) {
+        vector<BSTItem> items;
+        inOrder(root, items);
+        if (ascending) {
+            sort(items.begin(), items.end(), [](BSTItem a, BSTItem b) { return a.name < b.name; });
+        } else {
+            sort(items.begin(), items.end(), [](BSTItem a, BSTItem b) { return a.name > b.name; });
+        }
+        displayItems(items);
+    }
+
+    void displayItemsSortedByPrice(bool ascending = true) {
+        vector<BSTItem> items;
+        inOrder(root, items);
+        if (ascending) {
+            sort(items.begin(), items.end(), [](BSTItem a, BSTItem b) { return a.price < b.price; });
+        } else {
+            sort(items.begin(), items.end(), [](BSTItem a, BSTItem b) { return a.price > b.price; });
+        }
+        displayItems(items);
+    }
+
+};
+
+
+void readItemsBST(istream& i, BSTTree& bst) {
+    string itemName, category;
+    int price;
+
+    while (i >> itemName >> category >> price) {
+        BSTItem newItem(itemName, category, price);
+        bst.add(newItem);
+        cout << "Inserted item: ";
+        newItem.print();
+    }
+
+    if (i.eof()) {
+        cout << "End of file reached." << endl;
+    } else {
+        cerr << "Error reading items from file." << endl;
+    }
+}
+
+
+// <MIN MAX HEAP>
+
 class Item {
 public:
     string itemName;
@@ -143,7 +299,45 @@ public:
 };
 
 
-                                                                      // < AVL Trees >
+void readItemsMin(istream& i, MinHeap& minHeap) {
+    string itemName, category;
+    int price;
+
+    while (i >> itemName >> category >> price) {
+        Item newItem(itemName, category, price);
+        minHeap.insertMinHeap(newItem);
+        cout << "Inserted item: ";
+        newItem.print();
+    }
+
+    if (i.eof()) {
+        cout << "End of file reached." << endl;
+    } else {
+        cerr << "Error reading items from file." << endl;
+    }
+}
+
+
+void readItemsMax(istream& i, MaxHeap& maxHeap) {
+    string itemName, category;
+    int price;
+
+    while (i >> itemName >> category >> price) {
+        Item newItem(itemName, category, price);
+        maxHeap.insertMaxHeap(newItem);
+        cout << "Inserted item: ";
+        newItem.print();
+    }
+
+    if (i.eof()) {
+        cout << "End of file reached." << endl;
+    } else {
+        cerr << "Error reading items from file." << endl;
+    }
+}
+
+
+// <AVL>
 
 class AVLNode {
 public:
@@ -415,49 +609,6 @@ public:
 };
 
 
-
-
-
-
-void readItemsMin(istream& i, MinHeap& minHeap) {
-    string itemName, category;
-    int price;
-
-    while (i >> itemName >> category >> price) {
-        Item newItem(itemName, category, price);
-        minHeap.insertMinHeap(newItem);
-        cout << "Inserted item: ";
-        newItem.print();
-    }
-
-    if (i.eof()) {
-        cout << "End of file reached." << endl;
-    } else {
-        cerr << "Error reading items from file." << endl;
-    }
-}
-
-
-
-void readItemsMax(istream& i, MaxHeap& maxHeap) {
-    string itemName, category;
-    int price;
-
-    while (i >> itemName >> category >> price) {
-        Item newItem(itemName, category, price);
-        maxHeap.insertMaxHeap(newItem);
-        cout << "Inserted item: ";
-        newItem.print();
-    }
-
-    if (i.eof()) {
-        cout << "End of file reached." << endl;
-    } else {
-        cerr << "Error reading items from file." << endl;
-    }
-}
-
-
 void readItemsAVL(istream& i, AVLTree& avlTree) {
     string itemName, category;
     int price;
@@ -476,7 +627,7 @@ void readItemsAVL(istream& i, AVLTree& avlTree) {
     }
 }
 
-
+// <MENUS>
 
 void displayMenu() {
     cout << "1. Binary Search Trees (BST)" << endl;
@@ -509,6 +660,16 @@ void displayAVLTreeMenu() {
     cout << "0. Back to main menu" << endl;
 }
 
+void displayBSTTreeMenu() {
+    cout << "1. Add items\n";
+    cout << "2. Remove item data\n";
+    cout << "3. Display the item data normally\n";
+    cout << "4. Display all the items sorted by their name ascending\n";
+    cout << "5. Display all the items sorted by their name descending\n";
+    cout << "6. Display all the items sorted by their prices ascending\n";
+    cout << "7. Display all the items sorted by their prices descending\n";
+    cout << "0. Back to main menu\n";
+}
 
 void minHeapMenu(MinHeap& minHeap) {
     int choice;
@@ -594,6 +755,7 @@ void maxHeapMenu(MaxHeap& maxHeap) {
         }
     } while (choice != 0);
 }
+
 void avlTreeMenu(AVLTree& avlTree) {
     int choice;
     string name, category;
@@ -638,11 +800,52 @@ void avlTreeMenu(AVLTree& avlTree) {
     } while (choice != 0);
 }
 
+void bstTreeMenu(BSTTree& bst) {
+    int choice;
+    string name, category;
+    int price;
+    do {
+        displayBSTTreeMenu();
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                cout << "Enter item name, category, and price: ";
+                cin >> name >> category >> price;
+                bst.add(name, category, price);
+                break;
+            case 2:
+                cout << "Enter item name to remove: ";
+                cin >> name;
+                bst.remove(name);
+                break;
+            case 3:
+                bst.displayItemsInOrder();
+                break;
+            case 4:
+                bst.displayItemsSortedByName(true);
+                break;
+            case 5:
+                bst.displayItemsSortedByName(false);
+                break;
+            case 6:
+                bst.displayItemsSortedByPrice(true);
+                break;
+            case 7:
+                bst.displayItemsSortedByPrice(false);
+                break;
+            case 0:
+                break;
+            default:
+                cout << "Invalid choice." << endl;
+        }
+    } while (choice != 0);
+}
 
 int main() {
     MinHeap minHeap;
     MaxHeap maxHeap;
     AVLTree avlTree;
+    BSTTree bst;
 
     int choice;
     do {
@@ -650,8 +853,18 @@ int main() {
         cin >> choice;
         switch (choice) {
             case 1:
-                cout << "It's not supported yet." << endl;
-                break;
+            {
+                ifstream inFile("items.txt");
+                if (!inFile) {
+                    cout << "Error opening file." << endl;
+                    break;
+                }
+                readItemsBST(inFile, bst);
+                cout << "Items loaded from file." << endl;
+                inFile.close();
+                bstTreeMenu(bst);
+                break;    
+            }
             case 2:
             {
                 ifstream inFile("items.txt");
